@@ -1,5 +1,7 @@
 # Azure Exam Studio
 
+**Live website:** https://red-river-0daf6d80f.5.azurestaticapps.net/
+
 Independent practice website for AI-103, AI-200 and AI-500. Includes 450 original
 multiple-choice scenarios (150 per exam), explanations and official Microsoft Learn
 references. All 35 study modules have multiple scenarios, but this bank is

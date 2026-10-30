@@ -14,8 +14,14 @@ foreach ($tool in @("az", "swa", "node")) {
 node (Join-Path $PSScriptRoot "stage.mjs")
 if ($LASTEXITCODE -ne 0) { throw "Staging failed; nothing was deployed." }
 
-az group create --name $ResourceGroup --location $Location --subscription $SubscriptionId --tags purpose=certification-practice --output none --only-show-errors
-if ($LASTEXITCODE -ne 0) { throw "Resource group creation failed. Resolve the Azure sign-in/MFA or policy error before retrying." }
+$groupExists = az group exists --name $ResourceGroup --subscription $SubscriptionId --output tsv --only-show-errors
+if ($LASTEXITCODE -ne 0) { throw "Could not check the target resource group." }
+if ($groupExists -eq "false") {
+    az group create --name $ResourceGroup --location $Location --subscription $SubscriptionId --tags purpose=certification-practice --output none --only-show-errors
+    if ($LASTEXITCODE -ne 0) { throw "Resource group creation failed. Resolve the Azure sign-in/MFA or policy error before retrying." }
+} elseif ($groupExists -ne "true") {
+    throw "Azure returned an unexpected resource-group existence result."
+}
 
 $sitesJson = az staticwebapp list --resource-group $ResourceGroup --subscription $SubscriptionId --output json --only-show-errors
 if ($LASTEXITCODE -ne 0) { throw "Could not check the target static web app." }

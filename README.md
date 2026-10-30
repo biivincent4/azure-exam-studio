@@ -93,8 +93,8 @@ With Azure CLI, SWA CLI and Node installed, run:
 .\deploy.ps1 -SubscriptionId "<approved subscription ID>"
 ```
 
-The script stages only the public assets in `.azure-publish`, creates the
-dedicated resource group and Free app, keeps its deployment token in the child
+The script stages only the public assets in `.azure-publish`, reuses the target
+resource group and Free app (creating them only if missing), keeps its deployment token in the child
 process environment, deploys to production, and checks homepage content. It
 stops on Azure errors and refuses an existing non-Free app. It does not configure
 Cloudflare, upgrade plans or create a database. `.azure-publish` is generated

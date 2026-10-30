@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Original Azure AI certification practice scenarios, explanations and browser-local progress for AI-103, AI-200 and AI-500.">
+  <title>Azure Exam Studio | Practice with purpose</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#practice">Skip to practice</a>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Azure Exam Studio home"><span class="brand-icon" aria-hidden="true">A<span>+</span></span><span>EXAM<span class="brand-light">STUDIO</span><small>AZURE AI LEARNING LAB</small></span></a>
+    <span class="header-note"><span class="dot"></span> Your next chapter starts here</span>
+    <button id="reset" class="quiet">Reset progress</button>
+  </header>
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">LESS GUESSWORK. MORE UNDERSTANDING.</p>
+        <h1>Build confidence.<br><span>One scenario at a time.</span></h1>
+        <p class="hero-copy">Three certifications. One focused workspace. Test your decisions, understand the reasoning, and turn weak spots into strengths.</p>
+        <div class="hero-tags"><span id="bank-size">Original practice scenarios</span><span>Explained answers</span><span>No sign-in needed</span></div>
+      </div>
+      <aside class="journey"><div class="journey-top"><span class="eyebrow">YOUR STUDY SNAPSHOT</span><span aria-hidden="true">↗</span></div><div class="snapshot"><strong id="overall-count">0<span> / …</span></strong><span>scenarios explored</span></div><div class="track"><div id="overall-bar"></div></div><p>Small, consistent steps.<br>Real understanding that stays with you.</p></aside>
+    </section>
+    <section aria-label="Choose a certification" class="exam-grid" id="exam-cards"></section>
+    <section class="workspace" id="practice">
+      <div class="workspace-heading"><div><p class="eyebrow">PUT YOUR KNOWLEDGE TO WORK</p><h2>Practice workspace</h2></div><span class="local-badge">Progress stays in this browser</span></div>
+      <div class="toolbar">
+        <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search a topic, scenario or module…" aria-label="Search questions"></label>
+        <label><span class="sr-only">Domain</span><select id="domain"><option value="all">All domains</option></select></label>
+        <label><span class="sr-only">Question status</span><select id="status"><option value="all">All questions</option><option value="new">Unanswered</option><option value="missed">Needs review</option><option value="saved">Bookmarked answers</option></select></label>
+      </div>
+      <div class="practice-grid">
+        <aside class="question-panel"><div class="list-heading"><h3>Question bank</h3><span id="result-count"></span></div><nav id="question-list" aria-label="Practice questions"></nav></aside>
+        <article class="question-card" id="question-card"></article>
+      </div>
+      <p class="notice" id="storage-notice" role="status" hidden></p>
+    </section>
+    <section class="bottom-grid">
+      <div class="insight"><span class="eyebrow">LEARN THE WHY</span><h2>Not just the right answer.<br>The right reasoning.</h2><p>Choose an answer before revealing the explanation. Revisit missed questions, then test yourself on unfamiliar scenarios. Practice scores are not an exam-readiness guarantee.</p></div>
+      <div class="resources"><h3>Your source of truth</h3><p>These original study scenarios map to exam objectives, but are not official Microsoft questions or a complete syllabus. Verify evolving product behavior in Microsoft Learn.</p><div id="resource-links"></div></div>
+    </section>
+  </main>
+  <noscript><p class="notice">Enable JavaScript to load the question bank and save practice progress in this browser.</p></noscript>
+  <footer><span>AZURE EXAM STUDIO <span class="footer-divider">/</span> Independent study companion</span><span>No exam dumps. No model or Azure account required.</span></footer>
+  <dialog id="reset-dialog"><h2>Start fresh?</h2><p>This deletes this site's answers and bookmarks from this browser only.</p><div class="dialog-actions"><button id="cancel-reset" class="quiet">Keep progress</button><button id="confirm-reset" class="primary">Reset progress</button></div></dialog>
+</body>
+</html>

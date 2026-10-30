@@ -1,0 +1,9 @@
+.azure-publish/
+node_modules/
+.env
+.env.*
+.azure/
+.swa/
+*.log
+.DS_Store
+Thumbs.db

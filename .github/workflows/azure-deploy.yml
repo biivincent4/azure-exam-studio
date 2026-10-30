@@ -1,0 +1,68 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: azure-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.AZURE_DEPLOYMENT_ENABLED == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: azure-production
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+      - name: Test before deployment
+        run: npm test
+      - name: Stage only public website assets
+        run: npm run stage
+      - name: Require Azure deployment configuration
+        env:
+          DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        shell: bash
+        run: |
+          if [[ -z "$DEPLOYMENT_TOKEN" ]]; then
+            echo "::error::Set AZURE_STATIC_WEB_APPS_API_TOKEN in the azure-production environment after creating the Free Azure Static Web App."
+            exit 1
+          fi
+      - name: Deploy static website
+        id: azure
+        uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: .azure-publish
+          api_location: ""
+          output_location: ""
+          skip_app_build: true
+      - name: Verify published homepage
+        env:
+          SITE_URL: ${{ steps.azure.outputs.static_web_app_url }}
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFile } from "node:fs/promises";
+          const url = new URL(process.env.SITE_URL);
+          if (url.protocol !== "https:" || !url.hostname.endsWith(".azurestaticapps.net")) {
+            throw new Error("Azure did not return an expected HTTPS website URL.");
+          }
+          const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+          if (!response.ok || !(await response.text()).includes("Azure Exam Studio")) {
+            throw new Error("Published homepage verification failed.");
+          }
+          await appendFile(process.env.GITHUB_STEP_SUMMARY, `Published website: ${url.href}\n`);
+          JS
